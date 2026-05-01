@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA Test Plan - Money Transfers API</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 40px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            background-color: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        tr:hover {
+            background-color: #f5f7fa;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: bold;
+            background-color: #e0e0e0;
+            color: #555;
+        }
+        .assumptions {
+            background-color: #e8f4f8;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>QA Test Plan: Money Transfers API</h1>
+
+    <h2>1. User Creation API <code>(POST /api/v1/users)</code></h2>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 20%">Title</th>
+                <th style="width: 35%">Steps</th>
+                <th style="width: 35%">Expected Result</th>
+                <th style="width: 10%">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>TC-U01: Create valid user</strong></td>
+                <td>1. Send POST with valid `name` and `email`.</td>
+                <td>201 Created. User is returned with a valid UUID.</td>
+                <td><span class="status">Not Executed</span></td>
+            </tr>
+            <tr>
+                <td><strong>TC-U02: Missing required fields</strong></td>
+                <td>1. Send POST with empty body <code>{}</code>.</td>
+                <td>422 Unprocessable Entity. Validation errors for `name` and `email`.</td>
+                <td><span class="status">Not Executed</span></td>
+            </tr>
+            <tr>
+                <td><strong>TC-U03: Duplicate email</strong></td>
+                <td>1. Create a user with `test@example.com`.<br>2. Send POST again with the exact same email.</td>
+                <td>422 Unprocessable Entity. Validation error indicating email is already taken.</td>
+                <td><span class="status">Not Executed</span></td>
+            </tr>
+            <tr>
+                <td><strong>TC-U04: Invalid email format</strong></td>
+                <td>1. Send POST with email `invalid-email-format`.</td>
+                <td>422 Unprocessable Entity. Validation error for email format.</td>
+                <td><span class="status">Not Executed</span></td>
+            </tr>
+            <tr>
+                <td><strong>TC-U05: Fake DNS/Disposable email (RFC, DNS Check)</strong></td>
+                <td>1. Send POST with email `test@fake-domain-123456.xyz`.</td>
+                <td>422 Unprocessable Entity. Validation error indicating the email domain lacks a valid MX/A record.</td>
+                <td><span class="status">Not Executed</span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>2. Account Creation API <code>(POST /api/v1/accounts)</code></h2>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 20%">Title</th>
+                <th style="width: 35%">Steps</th>
+                <th style="width: 35%">Expected Result</th>
+                <th style="width: 10%">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>TC-A01: Create valid account</strong></td>
+                <td>1. Send POST with valid `user_id` (UUID), `name`, and `balance` (e.g., 100.50).</td>
+                <td>201 Created. Account is returned, balance matches exactly 100.50.</td>
+                <td><span class="status">Not Executed</span></td>
+            </tr>
+            <tr>
+                <td><strong>TC-A02: Non-existent user ID</strong></td>
+                <td>1. Send POST with a properly formatted UUID that does not exist in the users table.</td>
+                <td>422 Unprocessable Entity. Validation error indicating `user_id` does not exist.</td>
+                <td><span class="status">Not Executed</span></td>
+            </tr>
+            <tr>
+                <td><strong>TC-A03: Negative initial balance</strong></td>
+                <td>1. Send POST with `balance` = -50.00.</td>
+                <td>422 Unprocessable Entity. Validation error indicating balance must be >= 0.</td>
+                <td><span class="status">Not Executed</span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>3. Money Transfer API <code>(POST /api/v1/transfers)</code></h2>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 20%">Title</th>
+                <th style="width: 35%">Steps</th>
+                <th style="width: 35%">Expected Result</th>
+                <th style="width: 10%">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>TC-T01: Valid transfer</strong></td>
+                <td>1. POST transfer of $50.00 from Account A ($100) to Account B ($0).</td>
+                <td>200 OK. Transfer is `success`. Account A balance is now $50. Account B balance is $50.</td>
+                <td><span class="status">Not Executed</span></td>
+            </tr>
+            <tr>
+                <td><strong>TC-T02: Exact balance transfer (Boundary)</strong></td>
+                <td>1. POST transfer of exactly $100.00 from Account A ($100) to Account B ($0).</td>
+                <td>200 OK. Account A balance becomes $0.00. Account B balance becomes $100.00.</td>
+                <td><span class="status">Not Executed</span></td>
+            </tr>
+            <tr>
+                <td><strong>TC-T03: Insufficient balance</strong></td>
+                <td>1. POST transfer of $101.00 from Account A ($100) to Account B ($0).</td>
+                <td>422 Unprocessable Entity. Message: "Insufficient balance". Balances remain unchanged.</td>
+                <td><span class="status">Not Executed</span></td>
+            </tr>
+            <tr>
+                <td><strong>TC-T04: Transfer to same account</strong></td>
+                <td>1. POST transfer where `source_account_id` equals `destination_account_id`.</td>
+                <td>422 Unprocessable Entity. Validation error indicating source and destination must be different.</td>
+                <td><span class="status">Not Executed</span></td>
+            </tr>
+            <tr>
+                <td><strong>TC-T05: Concurrency / Deadlock check (Edge Case)</strong></td>
+                <td>1. Fire 10 simultaneous API requests sending $10 from Account A to Account B.<br>2. Fire 10 simultaneous API requests sending $10 from Account B to Account A.</td>
+                <td>All requests resolve without 500 Deadlock errors. Final balances accurately reflect the net transfers.</td>
+                <td><span class="status">Not Executed</span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>4. Transaction Ledger API <code>(GET /api/v1/accounts/{id}/transactions)</code></h2>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 20%">Title</th>
+                <th style="width: 35%">Steps</th>
+                <th style="width: 35%">Expected Result</th>
+                <th style="width: 10%">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>TC-L01: Fetch transaction history</strong></td>
+                <td>1. Execute a valid transfer.<br>2. GET transactions for the Source Account.</td>
+                <td>200 OK. Returns a `debit` transaction logging the exact amount, and `balance_before` / `balance_after`.</td>
+                <td><span class="status">Not Executed</span></td>
+            </tr>
+            <tr>
+                <td><strong>TC-L02: Invalid account UUID</strong></td>
+                <td>1. GET transactions for an account ID that does not exist.</td>
+                <td>404 Not Found. Proper JSON error message returned, not a stack trace.</td>
+                <td><span class="status">Not Executed</span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>5. Security & Rate Limiting</h2>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 20%">Title</th>
+                <th style="width: 35%">Steps</th>
+                <th style="width: 35%">Expected Result</th>
+                <th style="width: 10%">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>TC-S01: Rate Limit Trigger</strong></td>
+                <td>1. Fire 61 API requests to any endpoint within a 60-second window from the same IP.</td>
+                <td>Request 61 returns 429 Too Many Requests. Headers include `X-RateLimit-Reset`.</td>
+                <td><span class="status">Not Executed</span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="assumptions">
+        <strong>Assumptions:</strong>
+        <ul>
+            <li>The API consumes and returns <code>application/json</code> exclusively.</li>
+            <li>Authentication is out-of-scope for this specific iteration (endpoints are publicly accessible for the test).</li>
+            <li>Database transactions and locks (<code>lockForUpdate</code>) are supported by the underlying active database connection (e.g., InnoDB on MySQL).</li>
+        </ul>
+    </div>
+
+</body>
+</html>
