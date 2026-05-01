@@ -8,7 +8,23 @@ A secure, transactional API for transferring funds between accounts, built with 
 - **UUIDs:** Non-enumerable primary keys prevent IDOR attacks.
 - **Cent-Based Math:** Prevents floating-point precision issues.
 - **Performance Tracking:** Appends `X-Response-Time` header to all endpoints.
-- **Strict Validation:** Checks for valid DNS records on user emails.
+- **AI-Assisted Development:** Built with the assistance of `laramint/laravel-brain` to ensure high-quality, architecturally sound, and rapidly developed code. You can view the architectural graphs locally at `http://127.0.0.1:8000/_laravel-brain`.
+
+## Endpoint Architecture Flows
+
+*The following execution flow diagrams were generated via `laramint/laravel-brain` to visualize the architectural path of each endpoint.*
+
+### 1. Create User Flow
+![Create User Flow](./docs/create-user-flow.png)
+
+### 2. Create Account Flow
+![Create Account Flow](./docs/create-account-flow.png)
+
+### 3. Process Transfer Flow
+![Process Transfer Flow](./docs/process-transfer-flow.png)
+
+### 4. Fetch Transaction History Flow
+![Transaction History Flow](./docs/transaction-history-flow.png)
 
 ## Setup Instructions
 
