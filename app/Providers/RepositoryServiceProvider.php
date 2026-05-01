@@ -3,6 +3,14 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Repositories\UserRepository;
+use App\Repositories\Contracts\AccountRepositoryInterface;
+use App\Repositories\AccountRepository;
+use App\Repositories\Contracts\TransferRepositoryInterface;
+use App\Repositories\TransferRepository;
+use App\Repositories\Contracts\TransactionRepositoryInterface;
+use App\Repositories\TransactionRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -12,20 +20,20 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(
-            \App\Repositories\Contracts\UserRepositoryInterface::class,
-            \App\Repositories\UserRepository::class
+            UserRepositoryInterface::class,
+            UserRepository::class
         );
         $this->app->bind(
-            \App\Repositories\Contracts\AccountRepositoryInterface::class,
-            \App\Repositories\AccountRepository::class
+            AccountRepositoryInterface::class,
+            AccountRepository::class
         );
         $this->app->bind(
-            \App\Repositories\Contracts\TransferRepositoryInterface::class,
-            \App\Repositories\TransferRepository::class
+            TransferRepositoryInterface::class,
+            TransferRepository::class
         );
         $this->app->bind(
-            \App\Repositories\Contracts\TransactionRepositoryInterface::class,
-            \App\Repositories\TransactionRepository::class
+            TransactionRepositoryInterface::class,
+            TransactionRepository::class
         );
     }
 

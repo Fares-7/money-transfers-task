@@ -1,0 +1,1055 @@
+{
+  "info": {
+    "_postman_id": "22b976ef-a2b9-4b41-9209-c13a61bb176f",
+    "name": "Money Transfers API",
+    "description": "API collection for testing the secure money transfer service.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "38808339"
+  },
+  "item": [
+    {
+      "name": "1. Create User",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"mohamed\",\r\n    \"email\": \"mohmed@gmail.com\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/users",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "users"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "success",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Fares\",\r\n    \"email\": \"fares@gmail.com\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/users",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users"
+              ]
+            }
+          },
+          "status": "Created",
+          "code": 201,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Host",
+              "value": "127.0.0.1:8000"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            },
+            {
+              "key": "X-Powered-By",
+              "value": "PHP/8.2.12"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, private"
+            },
+            {
+              "key": "Date",
+              "value": "Fri, 01 May 2026 13:03:35 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "description": "",
+              "type": "text"
+            },
+            {
+              "key": "X-RateLimit-Limit",
+              "value": "60"
+            },
+            {
+              "key": "X-RateLimit-Remaining",
+              "value": "57"
+            },
+            {
+              "key": "X-Response-Time",
+              "value": "413.44ms"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": \"success\",\n    \"data\": {\n        \"id\": \"019de3a3-2db8-7026-a2e8-f48beffeeb37\",\n        \"name\": \"Fares\",\n        \"email\": \"fares@gmail.com\",\n        \"created_at\": \"2026-05-01T13:03:35+00:00\"\n    }\n}"
+        },
+        {
+          "name": "fail",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Fares\",\r\n    \"email\": \"fares2@gmail.com\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/users",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users"
+              ]
+            }
+          },
+          "status": "Unprocessable Content",
+          "code": 422,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Host",
+              "value": "127.0.0.1:8000"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            },
+            {
+              "key": "X-Powered-By",
+              "value": "PHP/8.2.12"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, private"
+            },
+            {
+              "key": "Date",
+              "value": "Fri, 01 May 2026 13:05:24 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "description": "",
+              "type": "text"
+            },
+            {
+              "key": "X-RateLimit-Limit",
+              "value": "60"
+            },
+            {
+              "key": "X-RateLimit-Remaining",
+              "value": "59"
+            },
+            {
+              "key": "X-Response-Time",
+              "value": "149.38ms"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": \"fail\",\n    \"data\": {\n        \"email\": [\n            \"The email has already been taken.\"\n        ]\n    }\n}"
+        }
+      ]
+    },
+    {
+      "name": "2. Create Source Account",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"user_id\": \"019de3d8-bee6-7214-ae81-88eb42a3eb36\",\r\n    // \"name\": \"Main Checking\",\r\n    \"balance\": -1000.00\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/accounts",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "accounts"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "success",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"user_id\": \"019de3a3-2db8-7026-a2e8-f48beffeeb37\",\r\n    \"name\": \"Main Checking\",\r\n    \"balance\": 1000.00\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/accounts",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "accounts"
+              ]
+            }
+          },
+          "status": "Created",
+          "code": 201,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Host",
+              "value": "127.0.0.1:8000"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            },
+            {
+              "key": "X-Powered-By",
+              "value": "PHP/8.2.12"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, private"
+            },
+            {
+              "key": "Date",
+              "value": "Fri, 01 May 2026 13:04:50 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "description": "",
+              "type": "text"
+            },
+            {
+              "key": "X-RateLimit-Limit",
+              "value": "60"
+            },
+            {
+              "key": "X-RateLimit-Remaining",
+              "value": "58"
+            },
+            {
+              "key": "X-Response-Time",
+              "value": "171.29ms"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": \"success\",\n    \"data\": {\n        \"id\": \"019de3a4-5209-71d6-9471-366134c9c7d3\",\n        \"user_id\": \"019de3a3-2db8-7026-a2e8-f48beffeeb37\",\n        \"name\": \"Main Checking\",\n        \"balance\": \"1000.00\",\n        \"created_at\": \"2026-05-01T13:04:50+00:00\"\n    }\n}"
+        },
+        {
+          "name": "fail",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"user_id\": \"019de3d8-bee6-7214-ae81-88eb42a3eb36\",\r\n    // \"name\": \"Main Checking\",\r\n    \"balance\": -1000.00\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/accounts",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "accounts"
+              ]
+            }
+          },
+          "status": "Unprocessable Content",
+          "code": 422,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Host",
+              "value": "127.0.0.1:8000"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            },
+            {
+              "key": "X-Powered-By",
+              "value": "PHP/8.2.12"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, private"
+            },
+            {
+              "key": "Date",
+              "value": "Fri, 01 May 2026 14:12:15 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "description": "",
+              "type": "text"
+            },
+            {
+              "key": "X-RateLimit-Limit",
+              "value": "60"
+            },
+            {
+              "key": "X-RateLimit-Remaining",
+              "value": "58"
+            },
+            {
+              "key": "X-Response-Time",
+              "value": "103.77ms"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": \"fail\",\n    \"data\": {\n        \"name\": [\n            \"The name field is required.\"\n        ],\n        \"balance\": [\n            \"The balance field must be at least 0.\"\n        ]\n    }\n}"
+        }
+      ]
+    },
+    {
+      "name": "3. Create Destination Account",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"user_id\": \"019de3d8-f77b-725b-bd76-6546313b15a9\",\r\n    \"name\": \"Savings\",\r\n    \"balance\": 500.00\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/accounts",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "accounts"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "success",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"user_id\": \"019de3a3-2db8-7026-a2e8-f48beffeeb37\",\r\n    \"name\": \"Savings\",\r\n    \"balance\": 500.00\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/accounts",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "accounts"
+              ]
+            }
+          },
+          "status": "Created",
+          "code": 201,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Host",
+              "value": "127.0.0.1:8000"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            },
+            {
+              "key": "X-Powered-By",
+              "value": "PHP/8.2.12"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, private"
+            },
+            {
+              "key": "Date",
+              "value": "Fri, 01 May 2026 13:59:38 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "description": "",
+              "type": "text"
+            },
+            {
+              "key": "X-RateLimit-Limit",
+              "value": "60"
+            },
+            {
+              "key": "X-RateLimit-Remaining",
+              "value": "59"
+            },
+            {
+              "key": "X-Response-Time",
+              "value": "281.24ms"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": \"success\",\n    \"data\": {\n        \"id\": \"019de3d6-7e69-73a1-8ea7-868e7090c279\",\n        \"user_id\": \"019de3a3-2db8-7026-a2e8-f48beffeeb37\",\n        \"name\": \"Savings\",\n        \"balance\": \"500.00\",\n        \"created_at\": \"2026-05-01T13:59:38+00:00\"\n    }\n}"
+        }
+      ]
+    },
+    {
+      "name": "4. Transfer Money",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"source_account_id\": \"019de3db-2b57-722e-9268-1726910958f9\",\r\n    \"destination_account_id\": \"019de3db-7e3a-7018-b751-b3438506cba1\",\r\n    \"amount\": 10.50\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/transfers",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "transfers"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "success",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"source_account_id\": \"019de3d9-6c0f-72a3-b51e-7e1b136b63c8\",\r\n    \"destination_account_id\": \"019de3da-4ea1-7089-a301-b56f56bd47ba\",\r\n    \"amount\": 150.50\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/transfers",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "transfers"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Host",
+              "value": "127.0.0.1:8000"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            },
+            {
+              "key": "X-Powered-By",
+              "value": "PHP/8.2.12"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, private"
+            },
+            {
+              "key": "Date",
+              "value": "Fri, 01 May 2026 14:05:43 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "description": "",
+              "type": "text"
+            },
+            {
+              "key": "X-RateLimit-Limit",
+              "value": "60"
+            },
+            {
+              "key": "X-RateLimit-Remaining",
+              "value": "57"
+            },
+            {
+              "key": "X-Response-Time",
+              "value": "163.65ms"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": \"success\",\n    \"data\": {\n        \"id\": \"019de3dc-1276-70dc-8a4f-41e1296c6205\",\n        \"source_account_id\": \"019de3d9-6c0f-72a3-b51e-7e1b136b63c8\",\n        \"destination_account_id\": \"019de3da-4ea1-7089-a301-b56f56bd47ba\",\n        \"amount\": \"150.50\",\n        \"status\": \"success\",\n        \"failure_reason\": null,\n        \"created_at\": \"2026-05-01T14:05:43+00:00\"\n    }\n}"
+        },
+        {
+          "name": "Insufficient balance",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"source_account_id\": \"019de3d9-6c0f-72a3-b51e-7e1b136b63c8\",\r\n    \"destination_account_id\": \"019de3da-4ea1-7089-a301-b56f56bd47ba\",\r\n    \"amount\": 1000.50\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/transfers",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "transfers"
+              ]
+            }
+          },
+          "status": "Unprocessable Content",
+          "code": 422,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Host",
+              "value": "127.0.0.1:8000"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            },
+            {
+              "key": "X-Powered-By",
+              "value": "PHP/8.2.12"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, private"
+            },
+            {
+              "key": "Date",
+              "value": "Fri, 01 May 2026 14:12:54 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "description": "",
+              "type": "text"
+            },
+            {
+              "key": "X-RateLimit-Limit",
+              "value": "60"
+            },
+            {
+              "key": "X-RateLimit-Remaining",
+              "value": "57"
+            },
+            {
+              "key": "X-Response-Time",
+              "value": "165.48ms"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": \"fail\",\n    \"data\": {\n        \"message\": \"Insufficient balance for this transfer.\"\n    }\n}"
+        },
+        {
+          "name": "source and destination must be different",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"source_account_id\": \"019de3d9-6c0f-72a3-b51e-7e1b136b63c8\",\r\n    \"destination_account_id\": \"019de3d9-6c0f-72a3-b51e-7e1b136b63c8\",\r\n    \"amount\": 10.50\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/transfers",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "transfers"
+              ]
+            }
+          },
+          "status": "Unprocessable Content",
+          "code": 422,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Host",
+              "value": "127.0.0.1:8000"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            },
+            {
+              "key": "X-Powered-By",
+              "value": "PHP/8.2.12"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, private"
+            },
+            {
+              "key": "Date",
+              "value": "Fri, 01 May 2026 14:14:04 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "description": "",
+              "type": "text"
+            },
+            {
+              "key": "X-RateLimit-Limit",
+              "value": "60"
+            },
+            {
+              "key": "X-RateLimit-Remaining",
+              "value": "59"
+            },
+            {
+              "key": "X-Response-Time",
+              "value": "126.58ms"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": \"fail\",\n    \"data\": {\n        \"destination_account_id\": [\n            \"The destination account id field and source account id must be different.\"\n        ]\n    }\n}"
+        }
+      ]
+    },
+    {
+      "name": "5. Get Transaction History",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/v1/accounts/1/transactions",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "accounts",
+            "1",
+            "transactions"
+          ],
+          "query": [
+            {
+              "key": "page",
+              "value": "1",
+              "disabled": true
+            },
+            {
+              "key": "per_page",
+              "value": "15",
+              "disabled": true
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "success",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/accounts/019de3db-2b57-722e-9268-1726910958f9/transactions",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "accounts",
+                "019de3db-2b57-722e-9268-1726910958f9",
+                "transactions"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "per_page",
+                  "value": "15",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Host",
+              "value": "127.0.0.1:8000"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            },
+            {
+              "key": "X-Powered-By",
+              "value": "PHP/8.2.12"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, private"
+            },
+            {
+              "key": "Date",
+              "value": "Fri, 01 May 2026 14:16:46 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "description": "",
+              "type": "text"
+            },
+            {
+              "key": "X-RateLimit-Limit",
+              "value": "60"
+            },
+            {
+              "key": "X-RateLimit-Remaining",
+              "value": "59"
+            },
+            {
+              "key": "X-Response-Time",
+              "value": "120.73ms"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "cookie": [
+            {
+              "expires": "Invalid Date",
+              "domain": "",
+              "path": ""
+            }
+          ],
+          "body": "{\n    \"status\": \"success\",\n    \"data\": {\n        \"transactions\": [\n            {\n                \"id\": \"019de3e5-8344-726b-bac8-7bd1e586837c\",\n                \"transfer_id\": \"019de3e5-8329-7212-ab96-490a3abb5005\",\n                \"type\": \"debit\",\n                \"amount\": \"10.50\",\n                \"balance_before\": \"832.00\",\n                \"balance_after\": \"821.50\",\n                \"created_at\": \"2026-05-01T14:16:02+00:00\"\n            },\n            {\n                \"id\": \"019de3e5-7e2b-7060-8877-cf26d9efcb60\",\n                \"transfer_id\": \"019de3e5-7e13-712f-b11f-caecfccc5b45\",\n                \"type\": \"debit\",\n                \"amount\": \"10.50\",\n                \"balance_before\": \"842.50\",\n                \"balance_after\": \"832.00\",\n                \"created_at\": \"2026-05-01T14:16:01+00:00\"\n            },\n            {\n                \"id\": \"019de3e5-7855-70b4-b518-5d8227c141f0\",\n                \"transfer_id\": \"019de3e5-783e-70e8-a87c-d6922794666d\",\n                \"type\": \"debit\",\n                \"amount\": \"10.50\",\n                \"balance_before\": \"853.00\",\n                \"balance_after\": \"842.50\",\n                \"created_at\": \"2026-05-01T14:15:59+00:00\"\n            },\n            {\n                \"id\": \"019de3e5-72a9-7000-8972-82fcfe4508f5\",\n                \"transfer_id\": \"019de3e5-7292-710f-9d5b-6a44befa541d\",\n                \"type\": \"debit\",\n                \"amount\": \"10.50\",\n                \"balance_before\": \"863.50\",\n                \"balance_after\": \"853.00\",\n                \"created_at\": \"2026-05-01T14:15:58+00:00\"\n            },\n            {\n                \"id\": \"019de3e5-6cce-72ba-a225-99ab56d0d53c\",\n                \"transfer_id\": \"019de3e5-6cb8-71f1-b28c-85b2d85f44e5\",\n                \"type\": \"debit\",\n                \"amount\": \"10.50\",\n                \"balance_before\": \"874.00\",\n                \"balance_after\": \"863.50\",\n                \"created_at\": \"2026-05-01T14:15:56+00:00\"\n            },\n            {\n                \"id\": \"019de3e5-676e-72c6-8249-c5d528eb6a4c\",\n                \"transfer_id\": \"019de3e5-6759-73df-b566-a1cf544a2c53\",\n                \"type\": \"debit\",\n                \"amount\": \"10.50\",\n                \"balance_before\": \"884.50\",\n                \"balance_after\": \"874.00\",\n                \"created_at\": \"2026-05-01T14:15:55+00:00\"\n            },\n            {\n                \"id\": \"019de3e5-6292-7146-98c2-40ba648a2284\",\n                \"transfer_id\": \"019de3e5-6276-71d9-b246-cf2fd364e16e\",\n                \"type\": \"debit\",\n                \"amount\": \"10.50\",\n                \"balance_before\": \"895.00\",\n                \"balance_after\": \"884.50\",\n                \"created_at\": \"2026-05-01T14:15:54+00:00\"\n            },\n            {\n                \"id\": \"019de3e5-5da8-7265-bded-2f2612bd832e\",\n                \"transfer_id\": \"019de3e5-5d8d-719e-9c2b-0c390c5768fa\",\n                \"type\": \"debit\",\n                \"amount\": \"10.50\",\n                \"balance_before\": \"905.50\",\n                \"balance_after\": \"895.00\",\n                \"created_at\": \"2026-05-01T14:15:53+00:00\"\n            },\n            {\n                \"id\": \"019de3e5-5781-70d0-a0f3-fa1179eea294\",\n                \"transfer_id\": \"019de3e5-5768-7337-aa1d-e5bd283fb327\",\n                \"type\": \"debit\",\n                \"amount\": \"10.50\",\n                \"balance_before\": \"916.00\",\n                \"balance_after\": \"905.50\",\n                \"created_at\": \"2026-05-01T14:15:51+00:00\"\n            },\n            {\n                \"id\": \"019de3e5-5203-72eb-a150-ed808a6ec6ad\",\n                \"transfer_id\": \"019de3e5-51ef-7124-a4f8-7f705336cb0a\",\n                \"type\": \"debit\",\n                \"amount\": \"10.50\",\n                \"balance_before\": \"926.50\",\n                \"balance_after\": \"916.00\",\n                \"created_at\": \"2026-05-01T14:15:50+00:00\"\n            },\n            {\n                \"id\": \"019de3e5-4cd3-7356-b002-236317ac2b93\",\n                \"transfer_id\": \"019de3e5-4cbe-73ae-bf07-78ed87c60a89\",\n                \"type\": \"debit\",\n                \"amount\": \"10.50\",\n                \"balance_before\": \"937.00\",\n                \"balance_after\": \"926.50\",\n                \"created_at\": \"2026-05-01T14:15:48+00:00\"\n            },\n            {\n                \"id\": \"019de3e5-4754-72c1-b5ec-359793171c80\",\n                \"transfer_id\": \"019de3e5-473a-7025-9fd1-507fd4ff62e5\",\n                \"type\": \"debit\",\n                \"amount\": \"10.50\",\n                \"balance_before\": \"947.50\",\n                \"balance_after\": \"937.00\",\n                \"created_at\": \"2026-05-01T14:15:47+00:00\"\n            },\n            {\n                \"id\": \"019de3e5-422b-71cb-b316-2c1ab949156f\",\n                \"transfer_id\": \"019de3e5-4214-7252-8ff1-6b206d3ad47e\",\n                \"type\": \"debit\",\n                \"amount\": \"10.50\",\n                \"balance_before\": \"958.00\",\n                \"balance_after\": \"947.50\",\n                \"created_at\": \"2026-05-01T14:15:45+00:00\"\n            },\n            {\n                \"id\": \"019de3e5-3cff-7187-aca4-b5087dca9d7b\",\n                \"transfer_id\": \"019de3e5-3ce9-72a4-8034-ed3d5b23a7d2\",\n                \"type\": \"debit\",\n                \"amount\": \"10.50\",\n                \"balance_before\": \"968.50\",\n                \"balance_after\": \"958.00\",\n                \"created_at\": \"2026-05-01T14:15:44+00:00\"\n            },\n            {\n                \"id\": \"019de3e5-373f-70ee-aea9-9ad95f7e5f68\",\n                \"transfer_id\": \"019de3e5-372a-70f2-b9cd-05e5e4605afb\",\n                \"type\": \"debit\",\n                \"amount\": \"10.50\",\n                \"balance_before\": \"979.00\",\n                \"balance_after\": \"968.50\",\n                \"created_at\": \"2026-05-01T14:15:43+00:00\"\n            }\n        ],\n        \"pagination\": {\n            \"current_page\": 1,\n            \"last_page\": 2,\n            \"total\": 17\n        }\n    }\n}"
+        },
+        {
+          "name": "error",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/accounts/1/transactions",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "accounts",
+                "1",
+                "transactions"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "per_page",
+                  "value": "15",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "status": "Not Found",
+          "code": 404,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Host",
+              "value": "127.0.0.1:8000"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            },
+            {
+              "key": "X-Powered-By",
+              "value": "PHP/8.2.12"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, private"
+            },
+            {
+              "key": "Date",
+              "value": "Fri, 01 May 2026 14:20:41 GMT"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "description": "",
+              "type": "text"
+            },
+            {
+              "key": "X-RateLimit-Limit",
+              "value": "60"
+            },
+            {
+              "key": "X-RateLimit-Remaining",
+              "value": "58"
+            },
+            {
+              "key": "X-Response-Time",
+              "value": "121.9ms"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": \"error\",\n    \"message\": \"Resource or endpoint not found.\"\n}"
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost/money-transfers-task/public"
+    }
+  ]
+}

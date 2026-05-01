@@ -9,6 +9,8 @@ use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Exception;
+use App\Exceptions\InsufficientBalanceException;
+use App\Exceptions\SameAccountTransferException;
 
 class TransferController extends Controller
 {
@@ -33,9 +35,9 @@ class TransferController extends Controller
 
             return $this->successResponse(new TransferResource($transfer), 200);
 
-        } catch (\App\Exceptions\InsufficientBalanceException $e) {
+        } catch (InsufficientBalanceException $e) {
             return $this->failResponse(['message' => $e->getMessage()], 422);
-        } catch (\App\Exceptions\SameAccountTransferException $e) {
+        } catch (SameAccountTransferException $e) {
             return $this->failResponse(['message' => $e->getMessage()], 422);
         } catch (Exception $e) {
             return $this->errorResponse("Transfer failed due to a system error.", 500);
