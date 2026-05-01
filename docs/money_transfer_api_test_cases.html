@@ -1,0 +1,208 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); }
+  .container { padding: 1.5rem 0; }
+  h2 { font-size: 18px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 0.5rem; }
+  .subtitle { font-size: 13px; color: var(--color-text-secondary); margin-bottom: 1.5rem; }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.25rem; align-items: center; }
+  .filter-label { font-size: 12px; color: var(--color-text-secondary); margin-right: 4px; }
+  .filter-btn { font-size: 12px; padding: 4px 10px; border-radius: 999px; border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-secondary); cursor: pointer; transition: all 0.15s; }
+  .filter-btn.active { background: #EEEDFE; color: #3C3489; border-color: #AFA9EC; }
+  .filter-btn:hover:not(.active) { background: var(--color-background-secondary); }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; margin-bottom: 1.5rem; }
+  .stat { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 0.75rem 1rem; }
+  .stat-label { font-size: 11px; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
+  .stat-value { font-size: 22px; font-weight: 500; color: var(--color-text-primary); }
+  .table-wrap { overflow-x: auto; border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; table-layout: fixed; min-width: 680px; }
+  thead th { background: var(--color-background-secondary); padding: 10px 12px; text-align: left; font-weight: 500; font-size: 11px; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 0.5px solid var(--color-border-tertiary); position: sticky; top: 0; z-index: 2; }
+  tbody tr { border-bottom: 0.5px solid var(--color-border-tertiary); transition: background 0.1s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--color-background-secondary); }
+  td { padding: 10px 12px; vertical-align: top; color: var(--color-text-primary); line-height: 1.5; }
+  .group-header td { background: var(--color-background-secondary); font-weight: 500; font-size: 12px; color: var(--color-text-secondary); padding: 6px 12px; border-top: 0.5px solid var(--color-border-secondary); text-transform: uppercase; letter-spacing: 0.06em; }
+  .tc-id { font-size: 11px; font-weight: 500; color: var(--color-text-secondary); white-space: nowrap; }
+  .badge { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 999px; font-weight: 500; white-space: nowrap; }
+  .badge-pos { background: #EAF3DE; color: #27500A; }
+  .badge-neg { background: #FCEBEB; color: #791F1F; }
+  .badge-edge { background: #FAEEDA; color: #633806; }
+  .badge-conc { background: #EEEDFE; color: #3C3489; }
+  .status { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 999px; background: var(--color-background-secondary); color: var(--color-text-secondary); border: 0.5px solid var(--color-border-tertiary); white-space: nowrap; }
+  ol { padding-left: 1.1rem; }
+  ol li { margin-bottom: 2px; }
+  .hidden { display: none; }
+  col.col-id { width: 54px; }
+  col.col-type { width: 58px; }
+  col.col-title { width: 170px; }
+  col.col-steps { width: 220px; }
+  col.col-expected { width: 148px; }
+  col.col-status { width: 90px; }
+  .search-wrap { flex: 1; min-width: 180px; }
+  .search-wrap input { width: 100%; font-size: 13px; padding: 5px 10px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-primary); }
+  .no-results { padding: 2rem; text-align: center; color: var(--color-text-secondary); font-size: 14px; }
+</style>
+<div class="container">
+  <h2>Money Transfer API — Test Suite</h2>
+  <p class="subtitle">Laravel 12 · 4 feature groups · all statuses default to Not Executed</p>
+
+  <div class="stats" id="stats-row">
+    <div class="stat"><div class="stat-label">Total</div><div class="stat-value" id="s-total">0</div></div>
+    <div class="stat"><div class="stat-label">Positive</div><div class="stat-value" id="s-pos" style="color:#27500A;">0</div></div>
+    <div class="stat"><div class="stat-label">Negative</div><div class="stat-value" id="s-neg" style="color:#791F1F;">0</div></div>
+    <div class="stat"><div class="stat-label">Edge / Boundary</div><div class="stat-value" id="s-edge" style="color:#633806;">0</div></div>
+    <div class="stat"><div class="stat-label">Concurrency</div><div class="stat-value" id="s-conc" style="color:#3C3489;">0</div></div>
+  </div>
+
+  <div class="filters">
+    <span class="filter-label">Filter:</span>
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="positive">Positive</button>
+    <button class="filter-btn" data-filter="negative">Negative</button>
+    <button class="filter-btn" data-filter="edge">Edge / Boundary</button>
+    <button class="filter-btn" data-filter="concurrency">Concurrency</button>
+    <div class="search-wrap"><input type="text" id="search" placeholder="Search title or steps…" /></div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <colgroup>
+        <col class="col-id"><col class="col-type"><col class="col-title">
+        <col class="col-steps"><col class="col-expected"><col class="col-status">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>ID</th><th>Type</th><th>Title</th>
+          <th>Steps</th><th>Expected Result</th><th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div class="no-results hidden" id="no-results">No matching test cases found.</div>
+  </div>
+</div>
+
+<script>
+const TC = [
+  {g:"Users & Accounts"},
+  {id:"TC-U01",t:"positive",title:"Create user with valid data",steps:["POST /api/users","Body: valid name, valid email (e.g. user@gmail.com), password ≥8 chars"],exp:"201 Created. JSON body includes user id (UUID v4), name, email. No password in response."},
+  {id:"TC-U02",t:"negative",title:"Create user with duplicate email",steps:["POST /api/users with email already in DB"],exp:"422 Unprocessable. Error message indicates email is taken."},
+  {id:"TC-U03",t:"negative",title:"Create user with invalid email format",steps:["POST /api/users","Body: email = 'notanemail'"],exp:"422 Unprocessable. Validation error on email field."},
+  {id:"TC-U04",t:"negative",title:"Create user with non-existent email domain (DNS check)",steps:["POST /api/users","Body: email = 'user@thisdoesnotexist12345.xyz'"],exp:"422 Unprocessable. DNS MX/A validation fails; error returned."},
+  {id:"TC-U05",t:"edge",title:"Create user — name with special characters",steps:["POST /api/users","Body: name = \"O'Brien-Smith <>\", valid email & password"],exp:"201 Created. Name stored and returned as provided, XSS-safe."},
+  {id:"TC-U06",t:"edge",title:"Create user — missing required fields",steps:["POST /api/users","Body: {} (empty)"],exp:"422 Unprocessable. Validation errors for all required fields."},
+  {id:"TC-U07",t:"positive",title:"Create account for existing user",steps:["POST /api/accounts","Body: valid user_id, initial balance"],exp:"201 Created. JSON includes account UUID, user_id, balance in decimal."},
+  {id:"TC-U08",t:"positive",title:"Create multiple accounts for same user",steps:["POST /api/accounts twice using same user_id"],exp:"Both accounts created. User can own multiple accounts."},
+  {id:"TC-U09",t:"negative",title:"Create account with non-existent user_id",steps:["POST /api/accounts","Body: user_id = random UUID not in DB"],exp:"404 Not Found or 422. Error indicates user does not exist."},
+  {id:"TC-U10",t:"edge",title:"Create account with zero initial balance",steps:["POST /api/accounts","Body: valid user_id, balance = 0"],exp:"201 Created. Account created with balance 0.00."},
+  {id:"TC-U11",t:"edge",title:"Create account with negative initial balance",steps:["POST /api/accounts","Body: valid user_id, balance = -100"],exp:"422 Unprocessable. Negative balance rejected."},
+  {id:"TC-U12",t:"edge",title:"Create account with very large balance",steps:["POST /api/accounts","Body: balance = 9999999999.99"],exp:"201 Created (or 422 if limit enforced). Balance stored as BIGINT cents without overflow."},
+
+  {g:"Money Transfer"},
+  {id:"TC-T01",t:"positive",title:"Successful transfer between two accounts",steps:["Create user A with account (balance 500)","Create user B with account (balance 100)","POST /api/transfers: from=A, to=B, amount=200"],exp:"200 OK. A balance = 300, B balance = 300. Two transaction records created (debit + credit)."},
+  {id:"TC-T02",t:"negative",title:"Transfer with insufficient source balance",steps:["Create account A (balance 50)","POST /api/transfers: from=A, to=B, amount=200"],exp:"422 or 400. Error: insufficient funds. Balances unchanged. No transactions recorded."},
+  {id:"TC-T03",t:"negative",title:"Transfer from and to the same account",steps:["POST /api/transfers: from=X, to=X, amount=100"],exp:"422 or 400. Error: source and destination must differ. Balances unchanged."},
+  {id:"TC-T04",t:"negative",title:"Transfer with amount = 0",steps:["POST /api/transfers: from=A, to=B, amount=0"],exp:"422 Unprocessable. Amount must be greater than zero."},
+  {id:"TC-T05",t:"negative",title:"Transfer with negative amount",steps:["POST /api/transfers: from=A, to=B, amount=-50"],exp:"422 Unprocessable. Negative amount rejected by validation."},
+  {id:"TC-T06",t:"negative",title:"Transfer referencing non-existent source account",steps:["POST /api/transfers: from=<random UUID>, to=B, amount=50"],exp:"404 Not Found. Source account does not exist."},
+  {id:"TC-T07",t:"negative",title:"Transfer referencing non-existent destination account",steps:["POST /api/transfers: from=A, to=<random UUID>, amount=50"],exp:"404 Not Found. Destination account does not exist."},
+  {id:"TC-T08",t:"edge",title:"Transfer exact available balance (boundary)",steps:["Account A balance = 100.00","POST /api/transfers: from=A, to=B, amount=100.00"],exp:"200 OK. Transfer succeeds. A balance = 0.00, B increases by 100.00."},
+  {id:"TC-T09",t:"edge",title:"Transfer one cent more than balance",steps:["Account A balance = 100.00","POST /api/transfers: from=A, to=B, amount=100.01"],exp:"422 or 400. Insufficient funds. Balances unchanged."},
+  {id:"TC-T10",t:"edge",title:"Transfer with floating-point amount (precision check)",steps:["POST /api/transfers: amount = 150.50","Verify DB stores 15050 cents","Verify API response shows 150.50"],exp:"200 OK. Internal BIGINT = 15050. API response decimal = 150.50. No precision loss."},
+  {id:"TC-T11",t:"edge",title:"Transfer with missing required fields",steps:["POST /api/transfers: body = {}"],exp:"422. Validation errors for all missing fields."},
+  {id:"TC-T12",t:"edge",title:"Transfer with non-UUID account IDs",steps:["POST /api/transfers: from='abc', to='123', amount=10"],exp:"422. Validation rejects non-UUID format."},
+  {id:"TC-T13",t:"edge",title:"Transfer amount with more than 2 decimal places",steps:["POST /api/transfers: amount = 10.999"],exp:"422 Unprocessable, or amount rounded/truncated to cents consistently."},
+
+  {g:"Concurrency & Atomicity"},
+  {id:"TC-C01",t:"concurrency",title:"Simultaneous transfers — same source, different targets",steps:["Account A balance = 100","Fire 2 concurrent requests: A→B (60) and A→C (60)","Both requests hit server at same time"],exp:"Only one transfer succeeds. The other fails with insufficient funds. A balance never goes negative. No lost updates."},
+  {id:"TC-C02",t:"concurrency",title:"Bi-directional simultaneous transfers (deadlock scenario)",steps:["Account A balance = 500, Account B balance = 500","Concurrent: A→B (100) and B→A (100) at same time"],exp:"Both succeed (deterministic lock order prevents deadlock). Final balances = 500 each. Four transaction records created."},
+  {id:"TC-C03",t:"concurrency",title:"Atomicity — DB failure mid-transfer",steps:["Simulate DB failure after debit, before credit","Trigger transfer"],exp:"Entire transaction rolls back. Source balance unchanged, destination unchanged. No orphan transaction records."},
+  {id:"TC-C04",t:"concurrency",title:"High-volume concurrent requests from same account",steps:["Account A balance = 1000","Send 20 concurrent transfer requests of 100 each to account B"],exp:"Exactly 10 succeed. A balance = 0. B gains exactly 1000. No double-spend or negative balance."},
+
+  {g:"Transaction History"},
+  {id:"TC-H01",t:"positive",title:"Fetch transaction history after a successful transfer",steps:["Complete a valid transfer A→B (amount=50)","GET /api/transactions?account_id=A"],exp:"200 OK. Returns debit record: amount=50, type=debit, balance_before, balance_after, status=success."},
+  {id:"TC-H02",t:"positive",title:"Double-entry — both debit and credit records exist",steps:["Complete transfer A→B (amount=50)","GET transactions for both A and B"],exp:"Account A has a debit record. Account B has a credit record. Both share the same transfer reference. 2 total records."},
+  {id:"TC-H03",t:"positive",title:"balance_before and balance_after populated correctly",steps:["Account A balance = 300","Transfer A→B amount = 100","Fetch A's transaction history"],exp:"Record shows balance_before = 300.00, balance_after = 200.00."},
+  {id:"TC-H04",t:"negative",title:"Fetch history for non-existent account",steps:["GET /api/transactions?account_id=<random UUID>"],exp:"404 Not Found, or empty array. No server error."},
+  {id:"TC-H05",t:"negative",title:"Transaction records NOT created for a failed transfer",steps:["Attempt transfer with insufficient funds (expect failure)","Fetch transaction history for source account"],exp:"No new transaction record added. History unchanged."},
+  {id:"TC-H06",t:"edge",title:"Transaction history for account with zero transfers",steps:["Create new account, perform no transfers","GET /api/transactions?account_id=<new account>"],exp:"200 OK. Empty array returned."},
+  {id:"TC-H07",t:"edge",title:"Transaction records are immutable (no update/delete)",steps:["Attempt PATCH or DELETE on a transaction record"],exp:"405 Method Not Allowed or 404. Transaction records cannot be modified."},
+  {id:"TC-H08",t:"positive",title:"Transaction history ordered chronologically",steps:["Perform 3 transfers on same account","Fetch transaction history"],exp:"Records returned in consistent order (created_at asc or desc). Order is deterministic."},
+
+  {g:"Security & Rate Limiting"},
+  {id:"TC-S01",t:"negative",title:"Rate limit enforcement — exceed 60 req/min",steps:["Send 61+ requests to any endpoint within 60 seconds from same IP"],exp:"429 Too Many Requests on the 61st request. Retry-After header present."},
+  {id:"TC-S02",t:"edge",title:"Account IDs not enumerable (UUID check)",steps:["Create 3 accounts","Note that IDs are UUIDs, not 1, 2, 3","Attempt GET /api/accounts/1"],exp:"404 Not Found. Integer IDs not routed. UUIDs prevent IDOR guessing."},
+  {id:"TC-S03",t:"edge",title:"SQL injection in transfer amount field",steps:["POST /api/transfers: amount = \"1; DROP TABLE accounts;--\""],exp:"422 Unprocessable. Input sanitised. No DB damage. Eloquent parameterised queries used."},
+  {id:"TC-S04",t:"edge",title:"Large payload / oversized request body",steps:["POST /api/users with name field = 10,000 character string"],exp:"422 Validation error or 413 Payload Too Large. No server crash."},
+];
+
+const tbody = document.getElementById('tbody');
+const noResults = document.getElementById('no-results');
+let activeFilter = 'all';
+let searchVal = '';
+
+function badge(t) {
+  const map = {positive:'badge-pos',negative:'badge-neg',edge:'badge-edge',concurrency:'badge-conc'};
+  const label = {positive:'Positive',negative:'Negative',edge:'Edge',concurrency:'Concurrency'};
+  return `<span class="badge ${map[t]||''}">${label[t]||t}</span>`;
+}
+
+function render() {
+  const rows = [];
+  let counts = {positive:0,negative:0,edge:0,concurrency:0};
+  let lastGroup = null;
+  TC.forEach(row => {
+    if (row.g) { lastGroup = row.g; return; }
+    const typeMatch = activeFilter === 'all' || row.t === activeFilter;
+    const q = searchVal.toLowerCase();
+    const textMatch = !q || row.title.toLowerCase().includes(q) || row.steps.join(' ').toLowerCase().includes(q);
+    if (typeMatch && textMatch) {
+      if (lastGroup && lastGroup !== rows._lastG) {
+        rows.push(`<tr class="group-header"><td colspan="6">${lastGroup}</td></tr>`);
+        rows._lastG = lastGroup;
+      }
+      counts[row.t] = (counts[row.t]||0) + 1;
+      const stepHtml = '<ol>' + row.steps.map(s=>`<li>${s}</li>`).join('') + '</ol>';
+      rows.push(`<tr data-type="${row.t}">
+        <td class="tc-id">${row.id}</td>
+        <td>${badge(row.t)}</td>
+        <td>${row.title}</td>
+        <td>${stepHtml}</td>
+        <td>${row.exp}</td>
+        <td><span class="status">Not Executed</span></td>
+      </tr>`);
+    }
+  });
+
+  const total = Object.values(counts).reduce((a,b)=>a+b,0);
+  document.getElementById('s-total').textContent = total;
+  document.getElementById('s-pos').textContent = counts.positive||0;
+  document.getElementById('s-neg').textContent = counts.negative||0;
+  document.getElementById('s-edge').textContent = counts.edge||0;
+  document.getElementById('s-conc').textContent = counts.concurrency||0;
+
+  if (total === 0) {
+    tbody.innerHTML = '';
+    noResults.classList.remove('hidden');
+  } else {
+    tbody.innerHTML = rows.join('');
+    noResults.classList.add('hidden');
+  }
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.filter;
+    render();
+  });
+});
+
+document.getElementById('search').addEventListener('input', e => {
+  searchVal = e.target.value;
+  render();
+});
+
+render();
+</script>
